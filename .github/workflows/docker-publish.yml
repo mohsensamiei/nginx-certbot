@@ -2,16 +2,14 @@ name: Build & Push Docker image
 
 on:
   push:
-    branches:
-      - master
     tags:
       - '*.*.*'
   workflow_dispatch:
 
 permissions:
   contents: read
-  id-token: write
   packages: write
+  id-token: write
 
 env:
   IMAGE_NAME: mohsensamiei/nginx-certbot
@@ -45,10 +43,12 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,name=master -> latest
-            type=ref,ref=refs/tags/*.*.* -> ${{ github.ref_name }}
-            type=semver,pattern=*.*.* -> ${{ github.ref_name }}
-          
+            type=ref,event=tag
+            type=ref,event=tag,value=latest
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
       - name: Build and push Docker image
         id: build-push
         uses: docker/build-push-action@v6
