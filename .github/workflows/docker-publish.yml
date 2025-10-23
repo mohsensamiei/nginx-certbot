@@ -58,5 +58,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Confirm pushed image digest
-        run: echo "Image digest: ${{ steps.build-push.outputs.digest }}"
+      - name: Show pushed digest
+        run: |
+          echo "✅ Image pushed successfully!"
+          echo "Tags: ${{ steps.meta.outputs.tags }}"
+          echo "Digest: ${{ steps.build-push.outputs.digest }}"
