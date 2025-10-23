@@ -4,6 +4,7 @@ RUN apk add --no-cache python3 py3-virtualenv dcron bash curl openssl ca-certifi
 RUN python3 -m venv /opt/venv
 RUN /opt/venv/bin/pip install --no-cache-dir certbot
 
+RUN rm -f /etc/nginx/conf.d/default.conf
 RUN mkdir -p /etc/nginx/default-conf.d
 COPY certbot.conf /etc/nginx/default-conf.d/certbot.conf
 COPY nginx.conf /etc/nginx/nginx.conf
